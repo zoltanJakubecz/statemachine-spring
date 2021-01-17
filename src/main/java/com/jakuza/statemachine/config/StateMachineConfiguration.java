@@ -1,7 +1,7 @@
 package com.jakuza.statemachine.config;
 
-import com.jakuza.statemachine.applicationreview.ApplicationEvents;
-import com.jakuza.statemachine.applicationreview.ApplicationStates;
+import com.jakuza.statemachine.action.ApplicationEvent;
+import com.jakuza.statemachine.action.ApplicationState;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.statemachine.config.EnableStateMachine;
 import org.springframework.statemachine.config.StateMachineConfigurerAdapter;
@@ -12,10 +12,10 @@ import org.springframework.statemachine.config.builders.StateMachineTransitionCo
 
 @Configuration
 @EnableStateMachine
-public class StateMachineConfiguration extends StateMachineConfigurerAdapter<ApplicationStates, ApplicationEvents> {
+public class StateMachineConfiguration extends StateMachineConfigurerAdapter<ApplicationState, ApplicationEvent> {
 
     @Override
-    public void configure(StateMachineConfigurationConfigurer<ApplicationStates, ApplicationEvents> config)
+    public void configure(StateMachineConfigurationConfigurer<ApplicationState, ApplicationEvent> config)
             throws Exception {
         config
                 .withConfiguration()
@@ -24,25 +24,25 @@ public class StateMachineConfiguration extends StateMachineConfigurerAdapter<App
     }
 
     @Override
-    public void configure(StateMachineStateConfigurer<ApplicationStates, ApplicationEvents> states) throws Exception {
+    public void configure(StateMachineStateConfigurer<ApplicationState, ApplicationEvent> states) throws Exception {
         states
                 .withStates()
-                .initial(ApplicationStates.OPEN)
-                .state(ApplicationStates.PROGRAMMING)
-                .state(ApplicationStates.TESTING)
-                .end(ApplicationStates.CLOSE);
+                .initial(ApplicationState.OPEN)
+                .state(ApplicationState.PROGRAMMING)
+                .state(ApplicationState.TESTING)
+                .end(ApplicationState.CLOSE);
     }
 
     @Override
-    public void configure(StateMachineTransitionConfigurer<ApplicationStates, ApplicationEvents> transitions) throws Exception {
+    public void configure(StateMachineTransitionConfigurer<ApplicationState, ApplicationEvent> transitions) throws Exception {
         transitions.withExternal()
-                .source(ApplicationStates.OPEN).target(ApplicationStates.PROGRAMMING).event(ApplicationEvents.APPROVE)
+                .source(ApplicationState.OPEN).target(ApplicationState.PROGRAMMING).event(ApplicationEvent.APPROVE)
                 .and().withExternal()
-                .source(ApplicationStates.PROGRAMMING).target(ApplicationStates.TESTING).event(ApplicationEvents.APPROVE)
+                .source(ApplicationState.PROGRAMMING).target(ApplicationState.TESTING).event(ApplicationEvent.APPROVE)
                 .and().withExternal()
-                .source(ApplicationStates.PROGRAMMING).target(ApplicationStates.PROGRAMMING).event(ApplicationEvents.REJECT)
+                .source(ApplicationState.TESTING).target(ApplicationState.PROGRAMMING).event(ApplicationEvent.REJECT)
                 .and().withExternal()
-                .source(ApplicationStates.TESTING).target(ApplicationStates.CLOSE).event(ApplicationEvents.APPROVE);
+                .source(ApplicationState.TESTING).target(ApplicationState.CLOSE).event(ApplicationEvent.APPROVE);
     }
 
 }
