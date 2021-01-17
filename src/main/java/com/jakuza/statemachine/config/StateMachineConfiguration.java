@@ -4,6 +4,7 @@ import com.jakuza.statemachine.action.ApplicationEvent;
 import com.jakuza.statemachine.action.ApplicationState;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.statemachine.config.EnableStateMachine;
+import org.springframework.statemachine.config.EnableStateMachineFactory;
 import org.springframework.statemachine.config.StateMachineConfigurerAdapter;
 import org.springframework.statemachine.config.builders.StateMachineConfigurationConfigurer;
 import org.springframework.statemachine.config.builders.StateMachineStateConfigurer;
@@ -11,7 +12,7 @@ import org.springframework.statemachine.config.builders.StateMachineTransitionCo
 
 
 @Configuration
-@EnableStateMachine
+@EnableStateMachineFactory
 public class StateMachineConfiguration extends StateMachineConfigurerAdapter<ApplicationState, ApplicationEvent> {
 
     @Override
